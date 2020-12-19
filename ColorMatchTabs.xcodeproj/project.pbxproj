@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		F36C689A250BC42F002AE19C /* Universal-ColorMatchTabs */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F36C689D250BC42F002AE19C /* Build configuration list for PBXAggregateTarget "Universal-ColorMatchTabs" */;
+			buildPhases = (
+				F36C689E250BC45E002AE19C /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Universal-ColorMatchTabs";
+			productName = "Universal-ColorMatchTabs";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		C529890A1D4630440058C829 /* ColorMatchTabs.h in Headers */ = {isa = PBXBuildFile; fileRef = C52989091D4630440058C829 /* ColorMatchTabs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5897A751D5AFDFD0013D181 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5897A5E1D5AFDFD0013D181 /* Constants.swift */; };
@@ -198,6 +212,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 1120;
 					};
+					F36C689A250BC42F002AE19C = {
+						CreatedOnToolsVersion = 11.6;
+						DevelopmentTeam = SB8GRXV6SY;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = C52989001D4630440058C829 /* Build configuration list for PBXProject "ColorMatchTabs" */;
@@ -213,6 +232,7 @@
 			projectRoot = "";
 			targets = (
 				C52989051D4630440058C829 /* ColorMatchTabs */,
+				F36C689A250BC42F002AE19C /* Universal-ColorMatchTabs */,
 			);
 		};
 /* End PBXProject section */
@@ -227,6 +247,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F36C689E250BC45E002AE19C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Merge Script\n# 1\n# Set bash script to exit immediately if any commands fail.\nset -e\n# 2\n# Setup some constants for use later on.\nFRAMEWORK_NAME=\"ColorMatchTabs\"\n# 3\n# If remnants from a previous build exist, delete them.\nif [ -d \"${SRCROOT}/build\" ]; then\nrm -rf \"${SRCROOT}/build\"\nfi\n# 4\n# Build the framework for device and for simulator (using\n# all needed architectures).\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch arm64 -arch armv7 -arch armv7s only_active_arch=no defines_module=yes -sdk \"iphoneos\"\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch x86_64 -arch i386 only_active_arch=no defines_module=yes -sdk \"iphonesimulator\"\n# 5\n# Remove .framework file if exists on Desktop from previous run.\nif [ -d \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\" ]; then\nrm -rf \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\"\nfi\n# 6\n# Copy the device version of framework to Desktop.\ncp -r \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework\" \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\"\n# 7\n# Replace the framework executable within the framework with\n# a new version created by merging the device and simulator# frameworks' executables with lipo.\nlipo -create -output \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphonesimulator/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\"\n# 8\n# Copy the Swift module mappings for the simulator into the\n# framework.  The device mappings already exist from step 6.\ncp -r \"${SRCROOT}/build/Release-iphonesimulator/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule/\" \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule\"\n# 9\n# Delete the most recent build.\nif [ -d \"${SRCROOT}/build\" ]; then\nrm -rf \"${SRCROOT}/build\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C52989011D4630440058C829 /* Sources */ = {
@@ -301,7 +341,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -355,7 +395,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -405,6 +445,24 @@
 			};
 			name = Release;
 		};
+		F36C689B250BC42F002AE19C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SB8GRXV6SY;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F36C689C250BC42F002AE19C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SB8GRXV6SY;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -422,6 +480,15 @@
 			buildConfigurations = (
 				C529890F1D4630440058C829 /* Debug */,
 				C52989101D4630440058C829 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F36C689D250BC42F002AE19C /* Build configuration list for PBXAggregateTarget "Universal-ColorMatchTabs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F36C689B250BC42F002AE19C /* Debug */,
+				F36C689C250BC42F002AE19C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

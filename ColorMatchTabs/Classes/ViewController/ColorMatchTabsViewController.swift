@@ -144,9 +144,12 @@ private extension ColorMatchTabsViewController {
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.shadowImage = UIImage(namedInCurrentBundle: "transparent_pixel")
-        let pixelImage = UIImage(namedInCurrentBundle: "pixel")
-        navigationController?.navigationBar.setBackgroundImage(pixelImage, for: .default)
+//        navigationController?.navigationBar.shadowImage = UIImage(namedInCurrentBundle: "transparent_pixel")
+//        let pixelImage = UIImage(namedInCurrentBundle: "pixel")
+//        navigationController?.navigationBar.setBackgroundImage(pixelImage, for: .default)
+        //For Left Menu, set navigation show
+        //[[self navigationController] setNavigationBarHidden:NO animated:YES];
+        navigationController?.setNavigationBarHidden(false, animated: true)
         
         titleLabel.frame = CGRect(x: 0, y: 0, width: 120, height: 40)
         titleLabel.text = title

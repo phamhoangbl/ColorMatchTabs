@@ -39,9 +39,11 @@ open class ColorTabs: UIControl {
     private(set) lazy var highlighterView: UIView = {
         let frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 0, height: self.bounds.height))
         let highlighterView = UIView(frame: frame)
-        highlighterView.layer.cornerRadius = self.bounds.height / 2
+        //highlighterView.layer.cornerRadius = self.bounds.height / 2
         self.addSubview(highlighterView)
         self.sendSubviewToBack(highlighterView)
+        let secondaryColor = UIColor(red: 81/255, green: 81/255, blue: 81/255, alpha: 1)
+        self.backgroundColor = secondaryColor
         
         return highlighterView
     }()
@@ -109,7 +111,7 @@ open class ColorTabs: UIControl {
     
     open func setHighlighterHidden(_ hidden: Bool) {
         let sourceHeight = hidden ? bounds.height : 0
-        let targetHeight = hidden ? 0 : bounds.height
+        let targetHeight = hidden ? 0 : bounds.height / 11
         
         let animation: CAAnimation = {
             $0.fromValue = sourceHeight / 2
@@ -119,6 +121,7 @@ open class ColorTabs: UIControl {
         }(CABasicAnimation(keyPath: "cornerRadius"))
         highlighterView.layer.add(animation, forKey: nil)
         highlighterView.layer.cornerRadius = targetHeight / 2
+        highlighterView.frame.origin.y = bounds.height - targetHeight
         
         UIView.animate(withDuration: HighlighterAnimationDuration) {
             self.highlighterView.frame.size.height = targetHeight
@@ -194,7 +197,7 @@ private extension ColorTabs {
     
     @objc
     func selectButton(_ sender: UIButton) {
-        if let index = buttons.firstIndex(of: sender) {
+        if let index = buttons.index(of: sender) {
             selectedSegmentIndex = index
         }
     }
@@ -244,6 +247,7 @@ private extension ColorTabs {
         let point = convert(toIcon.frame.origin, to: self)
         let offsetForFirstItem: CGFloat = toIndex == 0 ? -HighlighterViewOffScreenOffset : 0
         highlighterView.frame.origin.x = point.x + offsetForFirstItem
+        
         
         // offset for last item
         let offsetForLastItem: CGFloat = toIndex == countItems - 1 ? HighlighterViewOffScreenOffset : 0

@@ -107,7 +107,7 @@ public extension CircleMenu {
             button.tag = index
             button.layoutIfNeeded()
             button.backgroundColor = dataSource.circleMenu(self, tintColorAt: index)
-            button.layer.cornerRadius = itemDimension / 2
+            //button.layer.cornerRadius = itemDimension / 2
             button.layer.masksToBounds = true
             
             superview?.addSubview(button)
